@@ -30,10 +30,11 @@ namespace BlazorApiBackend.Controllers
 
         // GET: api/<PersonController>
         [HttpGet]
-        public IEnumerable<Person> Get()
+        public async Task<ActionResult<IEnumerable<Person>>> Get()
         {
-            return _personService.GetAll();
+            return _personService.GetAll().ToList();
         }
+
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
@@ -63,9 +64,10 @@ namespace BlazorApiBackend.Controllers
 
         // DELETE api/<PersonController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            _personService.Delete(id);
+            await _personService.DeleteAsync(id);
+            return Ok();
         }
 
         #endregion

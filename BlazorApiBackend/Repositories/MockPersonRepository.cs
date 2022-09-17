@@ -1,5 +1,6 @@
 ﻿using SharedLibrary.Models;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BlazorApiBackend.Repositories
 {
@@ -28,6 +29,11 @@ namespace BlazorApiBackend.Repositories
             return _persons;
         }
 
+        public async Task<IEnumerable<Person>> FindAllAsync()
+        {
+            return await Task.FromResult(_persons);
+        }
+
         public Person? FindById(int personID) => _persons.FirstOrDefault(p => p.PersonID == personID);
 
 
@@ -54,9 +60,14 @@ namespace BlazorApiBackend.Repositories
         }
 
 
-        public void Delete(Person entity)
+        public void Delete(Person person)
         {
-            _persons.Remove(entity);
+            _persons.Remove(person);
+        }
+
+        public async Task DeleteAsync(Person person)
+        {
+            await Task.Run(() => _persons.Remove(person));
         }
 
         public void DeleteById(int personID)
@@ -66,7 +77,17 @@ namespace BlazorApiBackend.Repositories
             if (person != null) { _persons.Remove(person); }
         }
 
- 
+        public async Task DeleteByIdAsync(int personID)
+        {
+            await Task.Run(() =>
+            {
+                Person? person = FindById(personID);
+
+                if (person != null) { _persons.Remove(person); }
+            });
+        }
+
+
         public void Save()
         {
             ///

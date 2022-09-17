@@ -17,6 +17,11 @@ namespace BlazorApiBackend.Services
             return _personRepository.FindAll();
         }
 
+        public Task<IEnumerable<Person>> GetAllAsync()
+        {
+            return _personRepository.FindAllAsync();
+        }
+
         public Person? GetById(int personID)
         {
             return _personRepository.FindById(personID);
@@ -44,6 +49,9 @@ namespace BlazorApiBackend.Services
             _personRepository.DeleteById(personID);
         }
 
-
+        public Task DeleteAsync(int personID)
+        {
+            return _personRepository.DeleteByIdAsync(personID);
+        }
     }
 }
