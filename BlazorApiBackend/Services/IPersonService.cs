@@ -1,5 +1,4 @@
-﻿using SharedLibrary.Models;
-
+﻿
 namespace BlazorApiBackend.Services
 {
     public interface IPersonService
@@ -8,19 +7,19 @@ namespace BlazorApiBackend.Services
 
         Task<IEnumerable<Person>> GetAllAsync();
 
-        Person? GetById(int personID);
-        Task<Person?> GetByIdAsync(int personID);
+        Person? GetById(string entityId);
+        Task<Person?> GetByIdAsync(string entityId);
 
-        bool TryGetById(int personID, out Person? person);
-        Task<Tuple<bool, Person?>> TryGetByIdAsync(int personID);
+        bool TryGetById(string entityId, out Person? entity);
+        Task<Tuple<bool, Person?>> TryGetByIdAsync(string entityId);
 
-        Person? Insert(Person person);
-        Task<Person?> InsertAsync(Person person);
+        Person? Insert(Person entity);
+        Task<Person?> InsertAsync(Person entity);
 
-        Person? Update(Person person);
-        Task<Person?> UpdateAsync(Person person);
+        Person? Update(string entityId, Person entity);
+        Task<Person?> UpdateAsync(string entityId, Person entity);
 
-        void Delete(int personID);
-        Task DeleteAsync(int personID);
+        void Delete(string entityId);
+        Task DeleteAsync(string entityId);
     }
 }

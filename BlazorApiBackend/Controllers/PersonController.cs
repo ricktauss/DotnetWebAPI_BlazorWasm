@@ -1,6 +1,5 @@
 ﻿using BlazorApiBackend.Services;
 using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.Models;
 
 
 namespace BlazorApiBackend.Controllers
@@ -41,7 +40,7 @@ namespace BlazorApiBackend.Controllers
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person?>> Get(int id)
+        public async Task<ActionResult<Person?>> Get(string id)
         {
             (bool personFound, Person? person) = await _personService.TryGetByIdAsync(id); //Wait for result and destruct Tuple
 
@@ -62,14 +61,14 @@ namespace BlazorApiBackend.Controllers
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Person?>> Put(int id, [FromBody] Person person)
+        public async Task<ActionResult<Person?>> Put(string id, [FromBody] Person person)
         {
-            return await _personService.UpdateAsync(person);
+            return await _personService.UpdateAsync(id, person);
         }
 
         // DELETE api/<PersonController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             await _personService.DeleteAsync(id);
             return Ok();

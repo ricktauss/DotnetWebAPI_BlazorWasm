@@ -1,5 +1,5 @@
 ﻿using BlazorApiBackend.Repositories;
-using SharedLibrary.Models;
+using WebApiBackend.Repositories;
 
 namespace BlazorApiBackend.Services
 {
@@ -33,57 +33,57 @@ namespace BlazorApiBackend.Services
         }
 
 
-        public Person? GetById(int personID)
+        public Person? GetById(string entityId)
         {
-            return _personRepository.FindById(personID);
+            return _personRepository.FindById(entityId);
         }
-        public Task<Person?> GetByIdAsync(int personID)
+        public Task<Person?> GetByIdAsync(string entityId)
         {
-            return _personRepository.FindByIdAsync(personID);
+            return _personRepository.FindByIdAsync(entityId);
         }
 
 
-        public bool TryGetById(int personID, out Person? person)
+        public bool TryGetById(string entityId, out Person? person)
         {
-            person = GetById(personID);
+            person = GetById(entityId);
 
             return person != null;
         }
-        public async Task<Tuple<bool, Person?>> TryGetByIdAsync(int personID)
+        public async Task<Tuple<bool, Person?>> TryGetByIdAsync(string entityId)
         {
-            Person? person = await GetByIdAsync(personID);
-            bool personFound = person != null;
+            Person? _person = await GetByIdAsync(entityId);
+            bool personFound = _person != null;
 
-            return new Tuple<bool, Person?>(personFound,person);
+            return new Tuple<bool, Person?>(personFound,_person);
         }
 
 
-        public Person? Insert(Person person)
+        public Person? Insert(Person entity)
         {
-            return _personRepository.Insert(person);
+            return _personRepository.Insert(entity);
         }
-        public Task<Person?> InsertAsync(Person person)
+        public Task<Person?> InsertAsync(Person entity)
         {
-            return _personRepository.InsertAsync(person);
-        }
-
-
-        public Person? Update(Person person)
-        {
-            return _personRepository.Update(person);
-        }
-        public Task<Person?> UpdateAsync(Person person)
-        {
-            return _personRepository.UpdateAsync(person);
+            return _personRepository.InsertAsync(entity);
         }
 
-        public void Delete(int personID)
+
+        public Person? Update(string entityId, Person entity)
         {
-            _personRepository.DeleteById(personID);
+            return _personRepository.Update(entityId, entity);
         }
-        public Task DeleteAsync(int personID)
+        public Task<Person?> UpdateAsync(string entityId, Person entity)
         {
-            return _personRepository.DeleteByIdAsync(personID);
+            return _personRepository.UpdateAsync(entityId, entity);
+        }
+
+        public void Delete(string entityId)
+        {
+            _personRepository.DeleteById(entityId);
+        }
+        public Task DeleteAsync(string entityId)
+        {
+            return _personRepository.DeleteByIdAsync(entityId);
         }
 
         #endregion
