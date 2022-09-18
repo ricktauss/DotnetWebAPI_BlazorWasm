@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApiBackend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class PersonController : ControllerBase
+    public class PersonsController : ControllerBase
     {
         #region fields
 
-        private readonly ILogger<PersonController> _logger;
+        private readonly ILogger<PersonsController> _logger;
         private readonly IPersonService _personService;
         private readonly IConfiguration _configuration;
 
@@ -18,7 +18,7 @@ namespace BlazorApiBackend.Controllers
 
         #region constructor
 
-        public PersonController(IPersonService personService, ILogger<PersonController> logger, IConfiguration configuration)
+        public PersonsController(IPersonService personService, ILogger<PersonsController> logger, IConfiguration configuration)
         {
             _personService = personService;
             _logger = logger;

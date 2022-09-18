@@ -6,6 +6,8 @@ namespace SharedLibrary.MongoDB.Models
     public class Person
     {
         [BsonId]
+        [BsonIgnoreIfDefault]
+        [BsonIgnoreIfNull]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 

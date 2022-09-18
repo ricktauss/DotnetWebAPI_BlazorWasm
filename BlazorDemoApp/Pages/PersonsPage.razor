@@ -1,0 +1,22 @@
+﻿@page "/persons"
+@inject HttpClient Http
+
+<PageTitle>Persons</PageTitle>
+
+<h1>Persons</h1>
+
+<p>This component fetches person data from a MongoDB</p>
+
+@if (_persons == null)
+{
+    <p><em>Loading persons ...</em></p>
+}
+
+@code {
+    private Person[]? _persons;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _persons = await Http.GetFromJsonAsync<Person[]>("https://localhost:7087/Persons");
+    }
+}

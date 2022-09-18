@@ -1,3 +1,4 @@
+global using SharedLibrary.MongoDB.Models;
 using BlazorDemoApp;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
