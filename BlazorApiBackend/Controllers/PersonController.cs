@@ -13,15 +13,17 @@ namespace BlazorApiBackend.Controllers
 
         private readonly ILogger<PersonController> _logger;
         private readonly IPersonService _personService;
+        private readonly IConfiguration _configuration;
 
         #endregion
 
         #region constructor
 
-        public PersonController(IPersonService personService, ILogger<PersonController> logger)
+        public PersonController(IPersonService personService, ILogger<PersonController> logger, IConfiguration configuration)
         {
             _personService = personService;
             _logger = logger;
+            _configuration = configuration;
         }
 
         #endregion
@@ -32,15 +34,18 @@ namespace BlazorApiBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> Get()
         {
-            return _personService.GetAll().ToList();
+            var result = await _personService.GetAllAsync();
+            return result.ToList();
         }
 
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public ActionResult<Person?> Get(int id)
+        public async Task<ActionResult<Person?>> Get(int id)
         {
-            if (!_personService.TryGetById(id, out var person))
+            (bool personFound, Person? person) = await _personService.TryGetByIdAsync(id); //Wait for result and destruct Tuple
+
+            if (!personFound)
             {
                 return NotFound(); 
             }
@@ -50,16 +55,16 @@ namespace BlazorApiBackend.Controllers
 
         // POST api/<PersonController>
         [HttpPost]
-        public ActionResult<Person?> Post([FromBody] Person person)
+        public async Task<ActionResult<Person?>> Post([FromBody] Person person)
         {
-            return _personService.Insert(person);
+            return await _personService.InsertAsync(person);
         }
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]
-        public ActionResult<Person?> Put(int id, [FromBody] Person person)
+        public async Task<ActionResult<Person?>> Put(int id, [FromBody] Person person)
         {
-            return _personService.Update(person);
+            return await _personService.UpdateAsync(person);
         }
 
         // DELETE api/<PersonController>/5

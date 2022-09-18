@@ -6,7 +6,13 @@ namespace BlazorApiBackend.Repositories
 {
     public class MockPersonRepository : IPersonRepository
     {
+        #region fields
+
         private List<Person> _persons;
+
+        #endregion
+
+        #region constructor
 
         public MockPersonRepository()
         {
@@ -23,19 +29,18 @@ namespace BlazorApiBackend.Repositories
             };
         }
 
+        #endregion
+
+        #region methods
 
         public IEnumerable<Person> FindAll()
         {
             return _persons;
         }
-
-        public async Task<IEnumerable<Person>> FindAllAsync()
-        {
-            return await Task.FromResult(_persons);
-        }
+        public async Task<IEnumerable<Person>> FindAllAsync() => await Task.FromResult(FindAll());
 
         public Person? FindById(int personID) => _persons.FirstOrDefault(p => p.PersonID == personID);
-
+        public async Task<Person?> FindByIdAsync(int personID) => await Task.FromResult(_persons.FirstOrDefault(p => p.PersonID == personID));
 
         public Person? Insert(Person person)
         {
@@ -45,6 +50,7 @@ namespace BlazorApiBackend.Repositories
 
             return person;
         }
+        public async Task<Person?> InsertAsync(Person person) => await Task.FromResult(Insert(person));
 
         public Person? Update(Person person)
         {
@@ -58,17 +64,13 @@ namespace BlazorApiBackend.Repositories
 
             return null;
         }
-
+        public async Task<Person?> UpdateAsync(Person person) => await Task.FromResult(Update(person));
 
         public void Delete(Person person)
         {
             _persons.Remove(person);
         }
-
-        public async Task DeleteAsync(Person person)
-        {
-            await Task.Run(() => _persons.Remove(person));
-        }
+        public async Task DeleteAsync(Person person) => await Task.Run(() => _persons.Remove(person));
 
         public void DeleteById(int personID)
         {
@@ -76,21 +78,13 @@ namespace BlazorApiBackend.Repositories
 
             if (person != null) { _persons.Remove(person); }
         }
-
-        public async Task DeleteByIdAsync(int personID)
-        {
-            await Task.Run(() =>
-            {
-                Person? person = FindById(personID);
-
-                if (person != null) { _persons.Remove(person); }
-            });
-        }
-
+        public async Task DeleteByIdAsync(int personID) => await Task.Run(() => DeleteById(personID));
 
         public void Save()
         {
             ///
         }
+
+        #endregion
     }
 }
