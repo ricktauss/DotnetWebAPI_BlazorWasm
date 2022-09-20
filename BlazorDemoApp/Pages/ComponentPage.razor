@@ -1,0 +1,52 @@
+﻿@page "/components"
+
+<div>
+    <div>
+        <h2>Stored data at page level: </h2>
+        <div style="display: inline-flex">
+            <ul>
+                <li>First name: <input type="text" @bind="_person.FirstName" /></li>
+                <li>Last name: <input type="text" @bind="_person.LastName" /></li>
+                <li>Age: <input type="number" @bind="_person.Age" /></li>
+                <li>Married: <b>@_person.IsMarried</b></li>
+                <li>No. of Childs: <b>@_person.Childs</b></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2><br />Normal parameter</h2>
+    <ShowPersonData FirstName="@_person.FirstName"
+                    LastName="@_person.LastName"
+                    Age="@_person.Age"></ShowPersonData>
+
+    <h2><br />Cascading parameter</h2>
+    <CascadingValue Name="FirstName" Value="@_person.FirstName">
+        <CascadingValue Name="LastName" Value="@_person.LastName">
+            <CascadingValue Name="Age" Value="@_person.Age">
+                <ShowPersonDataCascaded />
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+
+</div>
+
+
+@code {
+    private Person? _person = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _person = new Person { FirstName = "John", LastName = "Doe", Age = 32, IsMarried = true, Childs = 2 };
+    }
+
+    private class Person
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public int Age { get; set; }
+        public bool IsMarried { get; set; }
+        public int Childs { get; set; }
+    }
+}

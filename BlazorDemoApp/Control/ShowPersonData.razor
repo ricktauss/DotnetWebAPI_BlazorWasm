@@ -1,0 +1,17 @@
+﻿<div style="border: 1px solid black; padding: 10px 20px">
+    <h3>Child component. Data flow =  parent -> child (with [Parameter])</h3>
+    <p>
+        Person information: <b> @FirstName - @LastName - @Age </b>
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public string? FirstName { get; set; }
+
+    [Parameter]
+    public string? LastName { get; set; }
+
+    [Parameter]
+    public int Age { get; set; }
+}

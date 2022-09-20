@@ -1,0 +1,17 @@
+﻿<div style="border: 1px solid black; padding: 10px 20px">
+    <h5>Child component</h5>
+    Person information: <b> @FirstName - @LastName - @Age </b>
+</div>
+
+<ChildChild></ChildChild>
+
+@code {
+    [CascadingParameter(Name = "FirstName")]
+    public string? FirstName { get; set; }
+
+    [CascadingParameter(Name = "LastName")]
+    public string? LastName { get; set; }
+
+    [CascadingParameter(Name = "Age")]
+    public int Age { get; set; }
+}

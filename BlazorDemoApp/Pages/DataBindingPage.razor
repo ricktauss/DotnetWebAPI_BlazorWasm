@@ -1,0 +1,80 @@
+﻿@page "/databinding"
+
+<div>
+    <h2>One-Way binding</h2>
+
+    <div style="display: inline-flex">
+        <ul>
+            <li>First name: @_person.FirstName</li>
+            <li>Last name: @_person.LastName</li>
+            <li>Age:<b> @_person.Age </b></li>
+            <li>Married: <b>@_person.IsMarried</b></li>
+            <li>No. of Childs: <b>@_person.Childs</b></li>
+        </ul>
+    </div>
+</div>
+<br />
+<div>
+    <h2>Two-Way binding</h2>
+    <div style="display: inline-flex">
+        <div>
+            <p>Number variant 1</p>
+            <input type="number"
+                   @bind="_person.Age" />
+            <p><br />change bind-event</p>
+            <input type="number"
+                   @bind="_person.Age"
+                   @bind:event="oninput" />
+        </div>
+        <div style="padding: 0 20px">
+            <p>Number ariant 2</p>
+            <input type="number"
+                   @bind-value="_person.Age" />
+            <p><br />change bind-event</p>
+            <input type="number"
+                   @bind-value="_person.Age"
+                   @bind-value:event="oninput" />
+        </div>
+        <div>
+            <p>Checkbox</p>
+            <label>
+                <input type="checkbox" @bind="_person.IsMarried" />
+                Is married
+            </label>
+        </div>
+        <div style="padding: 0 20px">
+            <p>Radio button</p>
+            <p>Number of childs: </p>
+            <label>
+                <input type="radio" value="1" name="group" checked="@(_person.Childs == 1)" @onclick="()=>_person.Childs = 1" /> 1
+            </label>
+            <label>
+                <input type="radio" value="2" name="group" checked="@(_person.Childs == 2)" @onclick="()=>_person.Childs = 2" /> 2
+            </label>
+            <label>
+                <input type="radio" value="3" name="group" checked="@(_person.Childs == 3)" @onclick="()=>_person.Childs = 3"  /> 3
+            </label>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Person? _person = null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _person = new Person { FirstName = "John", LastName = "Doe", Age = 32, IsMarried = true, Childs = 2 };
+    }
+
+    private class Person
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public int Age { get; set; }
+        public bool IsMarried { get; set; }
+        public int Childs { get; set; }
+    }
+}
