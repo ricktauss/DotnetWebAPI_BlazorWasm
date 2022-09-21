@@ -1,0 +1,11 @@
+﻿@page "/person/{id}"
+
+
+<h3>PersonDetailsPage</h3>
+<p>ID of person is passed through URL here</p>
+<p>Passed ID of the person is: <b>@Id</b> </p>
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+}

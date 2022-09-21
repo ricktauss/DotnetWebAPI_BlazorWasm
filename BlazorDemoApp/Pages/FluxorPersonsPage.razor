@@ -1,0 +1,42 @@
+﻿@page "/personsflux"
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<PageTitle>Persons with Flux</PageTitle>
+
+<p>This component fetches person data from a MongoDB in combination with Flux</p>
+
+<RadzenButton Click="refreshPersonList" Text="Refresh" Icon="refresh" ButtonStyle="@(PersonsState.Value.IsLoading ? ButtonStyle.Light : ButtonStyle.Dark)"></RadzenButton>
+<br /><br />
+
+@if (PersonsState.Value.IsLoading)
+{
+    <p><em>Loading persons ...</em></p>
+}
+else
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@PersonsState.Value.Persons" TItem="Person" SelectionMode="DataGridSelectionMode.Single" RowSelect="selectPerson" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Person" Property="Id" Filterable="false" Title="Person ID" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="FirstName" Title="First Name" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="LastName" Title="Last Name" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="Gender" Title="Gender" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="Age" Title="Age" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="EMail" Title="EMail" Width="160px" />
+            <RadzenDataGridColumn TItem="Person" Property="Phone" Title="Phone" Width="160px" />
+        </Columns>
+    </RadzenDataGrid>
+}
+
+@code {
+    private Person? _selectedPerson;
+
+    private void selectPerson(Person person)
+    {
+        _selectedPerson = person;
+    }
+
+    private void refreshPersonList() => Dispatcher.Dispatch(new FetchPersonsAction());
+
+}

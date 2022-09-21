@@ -2,7 +2,7 @@
 
 <div>
     <div>
-        <h2>Stored data at page level: </h2>
+        <h2>Stored data at page level (Parent): </h2>
         <div style="display: inline-flex">
             <ul>
                 <li>First name: <input type="text" @bind="_person.FirstName" /></li>
@@ -15,11 +15,13 @@
     </div>
 
     <h2><br />Normal parameter</h2>
+    <p>Data flow =  parent -> child (with [Parameter])</p>
     <ShowPersonData FirstName="@_person.FirstName"
                     LastName="@_person.LastName"
                     Age="@_person.Age"></ShowPersonData>
 
     <h2><br />Cascading parameter</h2>
+    <p>Data flow =  parent -> middle -> child (with [Cascading Parameter])</p>
     <CascadingValue Name="FirstName" Value="@_person.FirstName">
         <CascadingValue Name="LastName" Value="@_person.LastName">
             <CascadingValue Name="Age" Value="@_person.Age">
@@ -27,6 +29,15 @@
             </CascadingValue>
         </CascadingValue>
     </CascadingValue>
+
+    <h2><br />Route parameter</h2>
+    <p>New page is openend and the ID of the person will be passed through URL (check browser URL) </p>
+    <p>
+        "/person/{id}"
+        <a href="@($"/person/{_person.Id}")" class="nav-link">Click me: @_person.FirstName - @_person.LastName</a>
+    </p>
+
+
 
 </div>
 
@@ -38,11 +49,12 @@
     {
         base.OnInitialized();
 
-        _person = new Person { FirstName = "John", LastName = "Doe", Age = 32, IsMarried = true, Childs = 2 };
+        _person = new Person { Id = Guid.NewGuid().ToString(), FirstName = "John", LastName = "Doe", Age = 32, IsMarried = true, Childs = 2 };
     }
 
     private class Person
     {
+        public string? Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public int Age { get; set; }

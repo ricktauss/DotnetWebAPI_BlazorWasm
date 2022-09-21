@@ -1,0 +1,22 @@
+﻿<h3>Counter</h3>
+<div style="border: 1px solid black; padding: 10px 20px">
+
+    <h4>Child component counter</h4>
+
+    <p role="status">Current count: @currentCount</p>
+
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<int> SetCurrentCount { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        SetCurrentCount.InvokeAsync(currentCount);
+    }
+}

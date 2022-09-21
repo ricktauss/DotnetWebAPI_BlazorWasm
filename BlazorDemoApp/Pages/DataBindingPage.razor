@@ -1,7 +1,7 @@
 ﻿@page "/databinding"
 
 <div>
-    <h2>One-Way binding</h2>
+    <h2>One-Way binding (top-down)</h2>
 
     <div style="display: inline-flex">
         <ul>
@@ -13,6 +13,7 @@
         </ul>
     </div>
 </div>
+<br />
 <br />
 <div>
     <h2>Two-Way binding</h2>
@@ -52,12 +53,17 @@
                 <input type="radio" value="2" name="group" checked="@(_person.Childs == 2)" @onclick="()=>_person.Childs = 2" /> 2
             </label>
             <label>
-                <input type="radio" value="3" name="group" checked="@(_person.Childs == 3)" @onclick="()=>_person.Childs = 3"  /> 3
+                <input type="radio" value="3" name="group" checked="@(_person.Childs == 3)" @onclick="()=>_person.Childs = 3" /> 3
             </label>
         </div>
     </div>
 </div>
-
+<br /><br />
+<div>
+    <h2>One-Way binding (bottom-up)</h2>
+    <p>Counter value (Parent): <b>@currentCount</b> which is passed from child component to parent via EventCallback</p>
+    <Counter1 SetCurrentCount="SetCurrentCount"></Counter1>
+</div>
 
 @code {
     private Person? _person = null;
@@ -76,5 +82,14 @@
         public int Age { get; set; }
         public bool IsMarried { get; set; }
         public int Childs { get; set; }
+    }
+}
+
+@code {
+    private int currentCount = 0;
+
+    private void SetCurrentCount(int value)
+    {
+        currentCount = value;
     }
 }

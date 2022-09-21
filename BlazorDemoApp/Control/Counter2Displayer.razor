@@ -1,0 +1,11 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<Store.Counter.CounterState> CounterState
+
+<div style="border: 1px solid black; padding: 10px 20px">
+    <p>Counter Displayer</p>
+    <p>Counter value from Store: <b>@CounterState.Value.ClickCount</b></p>
+</div>
+
+@code {
+
+}

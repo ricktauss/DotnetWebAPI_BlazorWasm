@@ -1,0 +1,25 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<Store.Counter.CounterState> CounterState
+@inject IDispatcher Dispatcher
+
+<h3>Counter</h3>
+<div style="border: 1px solid black; padding: 10px 20px">
+
+    <p>Current count: @CounterState.Value.ClickCount</p>
+
+    <button class="btn btn-primary" @onclick="IncrementCount">Increment by 1</button>
+    <button class="btn btn-primary" @onclick="IncrementCountBy2">Increment by 2</button>
+    <button class="btn btn-primary" @onclick="IncrementCountByCustomValue">Increment by custom value</button>
+    <label>Value:<input type="number" @bind="incrementValue" /></label>
+</div>
+<br />
+<h6>Component which just shows the counter value without data binding or parameter</h6>
+<Counter2Displayer></Counter2Displayer>
+
+@code {
+    private int incrementValue = 0;
+
+    private void IncrementCount() => Dispatcher.Dispatch(new Store.Counter.IncrementCounterAction());
+    private void IncrementCountBy2() => Dispatcher.Dispatch(new Store.Counter.IncrementCounterBy2Action());
+    private void IncrementCountByCustomValue() => Dispatcher.Dispatch(new Store.Counter.IncrementCounterByCustomValueAction(incrementValue));
+}
