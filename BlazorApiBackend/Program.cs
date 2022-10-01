@@ -1,6 +1,9 @@
 global using SharedLibrary.MongoDB.Models;
+global using SharedLibrary.DTOs;
+global using BlazorApiBackend.Services;
+global using Microsoft.AspNetCore.Mvc;
+
 using BlazorApiBackend.Repositories;
-using BlazorApiBackend.Services;
 using WebApiBackend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +16,9 @@ builder.Services.AddTransient<IPersonService, PersonService>();
 
 builder.Services.Configure<PersonStoreDatabaseSettings>(builder.Configuration.GetSection("PersonStoreDatabase"));
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,7 +39,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(
     options => options.WithOrigins("https://localhost:7275").AllowAnyMethod()
-) ;
+);
 
 app.UseAuthorization();
 

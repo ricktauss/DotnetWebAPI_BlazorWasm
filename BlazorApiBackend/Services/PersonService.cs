@@ -1,5 +1,6 @@
-﻿using BlazorApiBackend.Repositories;
-using WebApiBackend.Repositories;
+﻿using AutoMapper;
+using BlazorApiBackend.Repositories;
+using SharedLibrary.DTOs;
 
 namespace BlazorApiBackend.Services
 {
@@ -8,82 +9,116 @@ namespace BlazorApiBackend.Services
         #region fields
 
         private readonly IPersonRepository _personRepository;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region constructor
 
-        public PersonService(IPersonRepository personRepository)
+        public PersonService(IPersonRepository personRepository, IMapper mapper)
         {
             _personRepository = personRepository;
+            _mapper = mapper;
         }
-        
+
         #endregion
 
         #region methods
 
-        public IEnumerable<Person> GetAll()
+        public IEnumerable<PersonDto> GetAll()
         {
-            return _personRepository.FindAll();
+            IEnumerable<PersonDto> personsDto = _mapper.Map<IEnumerable<PersonDto>>(_personRepository.FindAll());
+
+            return personsDto;
         }
 
-        public Task<IEnumerable<Person>> GetAllAsync()
+        public Task<IEnumerable<PersonDto>> GetAllAsync()
         {
-            return _personRepository.FindAllAsync();
-        }
+            Task<IEnumerable<Person>> resultPersons = _personRepository.FindAllAsync();
+            Task<IEnumerable<PersonDto>> resultPersonsDto = _mapper.Map<Task<IEnumerable<PersonDto>>>(resultPersons);
 
-
-        public Person? GetById(string entityId)
-        {
-            return _personRepository.FindById(entityId);
-        }
-        public Task<Person?> GetByIdAsync(string entityId)
-        {
-            return _personRepository.FindByIdAsync(entityId);
+            return resultPersonsDto;
         }
 
 
-        public bool TryGetById(string entityId, out Person? person)
+        public PersonDto? GetById(string personId)
         {
-            person = GetById(entityId);
+            Person? resultPerson = _personRepository.FindById(personId);
+            PersonDto? resultPersonDto = _mapper.Map<PersonDto?>(resultPerson);
+
+            return resultPersonDto;
+        }
+
+        public Task<PersonDto?> GetByIdAsync(string personId)
+        {
+            Task<Person?> resultPerson = _personRepository.FindByIdAsync(personId);
+            Task<PersonDto?> resultPersonDto = _mapper.Map<Task<PersonDto?>>(resultPerson);
+
+            return resultPersonDto;
+        }
+
+
+        public bool TryGetById(string personId, out PersonDto? person)
+        {
+            person = GetById(personId);
 
             return person != null;
         }
-        public async Task<Tuple<bool, Person?>> TryGetByIdAsync(string entityId)
-        {
-            Person? _person = await GetByIdAsync(entityId);
-            bool personFound = _person != null;
 
-            return new Tuple<bool, Person?>(personFound,_person);
+        public async Task<Tuple<bool, PersonDto?>> TryGetByIdAsync(string personId)
+        {
+            PersonDto? resultPerson = await GetByIdAsync(personId);
+            bool personFound = resultPerson != null;
+
+            return new Tuple<bool, PersonDto?>(personFound, resultPerson);
         }
 
 
-        public Person? Insert(Person entity)
+        public PersonDto? Insert(PersonDto personDto)
         {
-            return _personRepository.Insert(entity);
+            Person person = _mapper.Map<Person>(personDto);
+            Person? resultPerson = _personRepository.Insert(person);
+            PersonDto? resultPersonDto = _mapper.Map<PersonDto?>(resultPerson);
+
+            return resultPersonDto;
         }
-        public Task<Person?> InsertAsync(Person entity)
+
+        public Task<PersonDto?> InsertAsync(PersonDto personDto)
         {
-            return _personRepository.InsertAsync(entity);
+            Person person = _mapper.Map<Person>(personDto);
+            Task<Person?> resultPerson = _personRepository.InsertAsync(person);
+            Task<PersonDto?> resultPersonDto = _mapper.Map<Task<PersonDto?>>(resultPerson);
+
+            return resultPersonDto;
         }
 
 
-        public Person? Update(string entityId, Person entity)
+        public PersonDto? Update(string personId, PersonDto personDto)
         {
-            return _personRepository.Update(entityId, entity);
-        }
-        public Task<Person?> UpdateAsync(string entityId, Person entity)
-        {
-            return _personRepository.UpdateAsync(entityId, entity);
+            Person person = _mapper.Map<Person>(personDto);
+            Person? resultPerson = _personRepository.Update(personId, person);
+            PersonDto? resultPersonDto = _mapper.Map<PersonDto?>(resultPerson);
+
+            return resultPersonDto;
         }
 
-        public void Delete(string entityId)
+        public Task<PersonDto?> UpdateAsync(string personId, PersonDto personDto)
         {
-            _personRepository.DeleteById(entityId);
+            Person person = _mapper.Map<Person>(personDto);
+            Task<Person?> resultPerson = _personRepository.UpdateAsync(personId, person);
+            Task<PersonDto?> resultPersonDto = _mapper.Map<Task<PersonDto?>>(resultPerson);
+
+            return resultPersonDto;
         }
-        public Task DeleteAsync(string entityId)
+
+        public void Delete(string personId)
         {
-            return _personRepository.DeleteByIdAsync(entityId);
+            _personRepository.DeleteById(personId);
+        }
+
+        public Task DeleteAsync(string personId)
+        {
+            return _personRepository.DeleteByIdAsync(personId);
         }
 
         #endregion

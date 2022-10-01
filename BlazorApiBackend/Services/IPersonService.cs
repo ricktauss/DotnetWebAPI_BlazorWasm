@@ -3,21 +3,21 @@ namespace BlazorApiBackend.Services
 {
     public interface IPersonService
     {
-        IEnumerable<Person> GetAll();
+        IEnumerable<PersonDto> GetAll();
 
-        Task<IEnumerable<Person>> GetAllAsync();
+        Task<IEnumerable<PersonDto>> GetAllAsync();
 
-        Person? GetById(string entityId);
-        Task<Person?> GetByIdAsync(string entityId);
+        PersonDto? GetById(string entityId);
+        Task<PersonDto?> GetByIdAsync(string entityId);
 
-        bool TryGetById(string entityId, out Person? entity);
-        Task<Tuple<bool, Person?>> TryGetByIdAsync(string entityId);
+        bool TryGetById(string entityId, out PersonDto? entity);
+        Task<Tuple<bool, PersonDto?>> TryGetByIdAsync(string entityId);
 
-        Person? Insert(Person entity);
-        Task<Person?> InsertAsync(Person entity);
+        PersonDto? Insert(PersonDto entity);
+        Task<PersonDto?> InsertAsync(PersonDto entity);
 
-        Person? Update(string entityId, Person entity);
-        Task<Person?> UpdateAsync(string entityId, Person entity);
+        PersonDto? Update(string entityId, PersonDto entity);
+        Task<PersonDto?> UpdateAsync(string entityId, PersonDto entity);
 
         void Delete(string entityId);
         Task DeleteAsync(string entityId);

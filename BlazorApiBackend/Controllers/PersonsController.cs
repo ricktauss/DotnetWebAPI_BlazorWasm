@@ -1,6 +1,4 @@
-﻿using BlazorApiBackend.Services;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 
 namespace BlazorApiBackend.Controllers
 {
@@ -31,22 +29,21 @@ namespace BlazorApiBackend.Controllers
 
         // GET: api/<PersonController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> Get()
+        public async Task<ActionResult<IEnumerable<PersonDto>>> Get()
         {
             var result = await _personService.GetAllAsync();
             return result.ToList();
         }
 
-
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person?>> Get(string id)
+        public async Task<ActionResult<PersonDto?>> Get(string id)
         {
-            (bool personFound, Person? person) = await _personService.TryGetByIdAsync(id); //Wait for result and destruct Tuple
+            (bool personFound, PersonDto? person) = await _personService.TryGetByIdAsync(id); //Wait for result and destruct Tuple
 
             if (!personFound)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             return person;
@@ -54,16 +51,27 @@ namespace BlazorApiBackend.Controllers
 
         // POST api/<PersonController>
         [HttpPost]
-        public async Task<ActionResult<Person?>> Post([FromBody] Person person)
+        public async Task<ActionResult<PersonDto?>> Post([FromBody] PersonDto person)
         {
+            if (person.Id != null)
+                return BadRequest("The DTO identifier must not have identifier in the body.");
+
             return await _personService.InsertAsync(person);
         }
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Person?>> Put(string id, [FromBody] Person person)
+        public async Task<ActionResult<PersonDto?>> Put(string id, [FromBody] PersonDto person)
         {
-            return await _personService.UpdateAsync(id, person);
+            if(person.Id != id)
+                return BadRequest("The DTO identifier does not match the identifier in the route.");
+
+            PersonDto? updatedPerson = await _personService.UpdateAsync(id, person);
+
+            if (updatedPerson == null)
+                return NotFound("The DTO identifier was not found.");
+
+            return updatedPerson;
         }
 
         // DELETE api/<PersonController>/5
