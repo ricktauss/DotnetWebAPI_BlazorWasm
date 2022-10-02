@@ -10,15 +10,17 @@ namespace BlazorApiBackend.Services
 
         private readonly IPersonRepository _personRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
         #endregion
 
         #region constructor
 
-        public PersonService(IPersonRepository personRepository, IMapper mapper)
+        public PersonService(IPersonRepository personRepository, IMapper mapper, ILogger<PersonService> logger)
         {
             _personRepository = personRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         #endregion

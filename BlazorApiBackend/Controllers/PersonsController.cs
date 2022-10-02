@@ -31,22 +31,13 @@ namespace BlazorApiBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PersonDto>>> Get()
         {
-            try
-            {
                 _logger.LogInformation("GetAll request");
 
                 var result = await _personService.GetAllAsync();
-
+                
                 _logger.LogInformation($"Returned {result.Count()} persons ");
 
                 return result.ToList();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-
-                return Problem(detail:null);
-            }
         }
 
         // GET api/<PersonController>/5

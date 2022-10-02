@@ -29,4 +29,8 @@
     <ProjectReference Include="..\SharedModels\SharedLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>

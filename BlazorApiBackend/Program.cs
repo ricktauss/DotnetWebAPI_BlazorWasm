@@ -5,11 +5,9 @@ global using Microsoft.AspNetCore.Mvc;
 
 using BlazorApiBackend.Repositories;
 using WebApiBackend.Repositories;
-using WebApiBackend;
 using NLog;
 using NLog.Web;
-using System;
-
+using WebApiBackend.Extensions;
 
 var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 logger.Debug("Application Starting Up");
@@ -48,8 +46,9 @@ try
     app.UseSwagger();
     app.UseSwaggerUI();
     //}
+  
 
-    //integrate https://code-maze.com/global-error-handling-aspnetcore/
+    app.ConfigureExceptionHandler();
     app.UseHttpsRedirection();
     app.UseCors("CorsPolicy");
     app.UseAuthorization();
