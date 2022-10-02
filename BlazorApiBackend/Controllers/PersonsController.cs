@@ -8,7 +8,7 @@ namespace BlazorApiBackend.Controllers
     {
         #region fields
 
-        private readonly ILogger<PersonsController> _logger;
+        private readonly ILogger _logger;
         private readonly IPersonService _personService;
         private readonly IConfiguration _configuration;
 
@@ -31,8 +31,22 @@ namespace BlazorApiBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PersonDto>>> Get()
         {
-            var result = await _personService.GetAllAsync();
-            return result.ToList();
+            try
+            {
+                _logger.LogInformation("GetAll request");
+
+                var result = await _personService.GetAllAsync();
+
+                _logger.LogInformation($"Returned {result.Count()} persons ");
+
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+
+                return Problem(detail:null);
+            }
         }
 
         // GET api/<PersonController>/5

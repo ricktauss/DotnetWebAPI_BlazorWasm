@@ -39,12 +39,12 @@ namespace WebApiBackend.Repositories
         }
 
 
-        public Person? FindById(string entityId)
+        public Person? FindById(object entityId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Person?> FindByIdAsync(string entityId)
+        public async Task<Person?> FindByIdAsync(object entityId)
         {
             return await _personCollection.Find(p => entityId.Equals(p.Id)).FirstOrDefaultAsync();
         }
@@ -55,19 +55,19 @@ namespace WebApiBackend.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Person?> InsertAsync(Person person)
+        public async Task<Person?> InsertAsync(Person entity)
         {
-            await _personCollection.InsertOneAsync(person);
-            return await FindByIdAsync(person.Id);
+            await _personCollection.InsertOneAsync(entity);
+            return await FindByIdAsync(entity.Id);
         }
 
 
-        public Person? Update(string entityId, Person entity)
+        public Person? Update(object entityId, Person entity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Person?> UpdateAsync(string entityId, Person entity)
+        public async Task<Person?> UpdateAsync(object entityId, Person entity)
         {
             await _personCollection.ReplaceOneAsync(p => entityId.Equals(p.Id), entity);
             return await FindByIdAsync(entityId);
@@ -85,12 +85,12 @@ namespace WebApiBackend.Repositories
         }
 
 
-        public void DeleteById(string entityId)
+        public void DeleteById(object entityId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteByIdAsync(string entityId)
+        public async Task DeleteByIdAsync(object entityId)
         {
             await _personCollection.DeleteOneAsync(p => entityId.Equals(p.Id));
         }

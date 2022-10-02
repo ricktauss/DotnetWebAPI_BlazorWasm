@@ -7,19 +7,19 @@ namespace BlazorApiBackend.Services
 
         Task<IEnumerable<PersonDto>> GetAllAsync();
 
-        PersonDto? GetById(string entityId);
-        Task<PersonDto?> GetByIdAsync(string entityId);
+        PersonDto? GetById(object personId);
+        Task<PersonDto?> GetByIdAsync(object personId);
 
-        bool TryGetById(string entityId, out PersonDto? entity);
-        Task<Tuple<bool, PersonDto?>> TryGetByIdAsync(string entityId);
+        bool TryGetById(object personId, out PersonDto? person);
+        Task<Tuple<bool, PersonDto?>> TryGetByIdAsync(object personId);
 
-        PersonDto? Insert(PersonDto entity);
-        Task<PersonDto?> InsertAsync(PersonDto entity);
+        PersonDto? Insert(PersonDto person);
+        Task<PersonDto?> InsertAsync(PersonDto person);
 
-        PersonDto? Update(string entityId, PersonDto entity);
-        Task<PersonDto?> UpdateAsync(string entityId, PersonDto entity);
+        PersonDto? Update(object personId, PersonDto person);
+        Task<PersonDto?> UpdateAsync(object personId, PersonDto person);
 
-        void Delete(string entityId);
-        Task DeleteAsync(string entityId);
+        void Delete(object personId);
+        Task DeleteAsync(object personId);
     }
 }

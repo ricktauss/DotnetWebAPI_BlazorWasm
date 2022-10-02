@@ -39,8 +39,8 @@ namespace WebApiBackend.Repositories
         }
         public async Task<IEnumerable<Person>> FindAllAsync() => await Task.FromResult(FindAll());
 
-        public Person? FindById(string entityId) => _persons.FirstOrDefault(p => entityId.Equals(p.Id));
-        public async Task<Person?> FindByIdAsync(string entityId) => await Task.FromResult(FindById(entityId));
+        public Person? FindById(object entityId) => _persons.FirstOrDefault(p => entityId.Equals(p.Id));
+        public async Task<Person?> FindByIdAsync(object entityId) => await Task.FromResult(FindById(entityId));
 
         public Person? Insert(Person entity)
         {
@@ -51,19 +51,19 @@ namespace WebApiBackend.Repositories
         }
         public async Task<Person?> InsertAsync(Person entity) => await Task.FromResult(Insert(entity));
 
-        public Person? Update(string entityId, Person entity)
+        public Person? Update(object entityId, Person entity)
         {
-            Person? _person = FindById(entityId);
-            if (_person != null)
+            Person? person = FindById(entityId);
+            if (person != null)
             {
-                DeleteById(_person.Id);
+                DeleteById(entityId);
                 Insert(entity);
                 return entity;
             }
 
             return null;
         }
-        public async Task<Person?> UpdateAsync(string entityId, Person entity) => await Task.FromResult(Update(entityId, entity));
+        public async Task<Person?> UpdateAsync(object entityId, Person entity) => await Task.FromResult(Update(entityId, entity));
 
         public void Delete(Person entity)
         {
@@ -71,13 +71,13 @@ namespace WebApiBackend.Repositories
         }
         public async Task DeleteAsync(Person entity) => await Task.Run(() => _persons.Remove(entity));
 
-        public void DeleteById(string entityId)
+        public void DeleteById(object entityId)
         {
             Person? person = FindById(entityId);
 
             if (person != null) { _persons.Remove(person); }
         }
-        public async Task DeleteByIdAsync(string entityId) => await Task.Run(() => DeleteById(entityId));
+        public async Task DeleteByIdAsync(object entityId) => await Task.Run(() => DeleteById(entityId));
 
         #endregion
     }

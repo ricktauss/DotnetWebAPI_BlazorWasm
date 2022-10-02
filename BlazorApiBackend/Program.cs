@@ -5,45 +5,68 @@ global using Microsoft.AspNetCore.Mvc;
 
 using BlazorApiBackend.Repositories;
 using WebApiBackend.Repositories;
-
-var builder = WebApplication.CreateBuilder(args);
-
-
-// Add services to the container.
-//builder.Services.AddSingleton<IPersonRepository, MockPersonRepository>();
-builder.Services.AddSingleton<IPersonRepository, MongoDbPersonRepository>();
-builder.Services.AddTransient<IPersonService, PersonService>();
-
-builder.Services.Configure<PersonStoreDatabaseSettings>(builder.Configuration.GetSection("PersonStoreDatabase"));
-
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddControllers();
+using WebApiBackend;
+using NLog;
+using NLog.Web;
+using System;
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+logger.Debug("Application Starting Up");
+
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
+
+    // NLog: Setup NLog for Dependency injection
+    builder.Logging.ClearProviders();
+    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Host.UseNLog();
+
+    // Add services to the container.
+    builder.Services.AddSingleton<IPersonRepository, MongoDbPersonRepository>();
+    builder.Services.AddTransient<IPersonService, PersonService>();
+
+    builder.Services.Configure<PersonStoreDatabaseSettings>(builder.Configuration.GetSection("PersonStoreDatabase"));
+
+    builder.Services.AddAutoMapper(typeof(Program));
+    builder.Services.AddControllers();
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    builder.Services.ConfigureCors();
 
 
-var app = builder.Build();
+    var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
+    // Configure the HTTP request pipeline.
+
+    //if (app.Environment.IsDevelopment())
+    //{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+    //}
 
-app.UseHttpsRedirection();
-
-app.UseCors(
-    options => options.WithOrigins("https://localhost:7275").AllowAnyMethod()
-);
-
-app.UseAuthorization();
-
-app.MapControllers();
+    //integrate https://code-maze.com/global-error-handling-aspnetcore/
+    app.UseHttpsRedirection();
+    app.UseCors("CorsPolicy");
+    app.UseAuthorization();
+    app.MapControllers();
 
 
-app.Run();
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    // NLog: catch setup errors
+    logger.Error(ex, "Stopped program because of exception");
+    throw;
+}
+finally
+{
+    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+    LogManager.Shutdown();
+}
