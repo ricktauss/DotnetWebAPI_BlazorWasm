@@ -14,7 +14,7 @@ namespace BlazorDemoApp.Store.Persons
         [EffectMethod]
         public async Task HandleFetchPersonsAction(FetchPersonsAction action, IDispatcher dispatcher)
         {
-            var persons = await _httpClient.GetFromJsonAsync<List<Person>?>("https://localhost:5001/Persons");
+            var persons = await _httpClient.GetFromJsonAsync<List<Person>?>("https://localhost:7087/Persons");
             dispatcher.Dispatch(new FetchPersonsResultAction(persons));
         }
 

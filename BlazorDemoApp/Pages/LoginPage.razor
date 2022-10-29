@@ -1,0 +1,35 @@
+﻿@page "/login"
+
+<h3>LoginPage</h3>
+
+<RadzenCard class="p-5">
+    <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H2" Class="mb-4">
+        Register and password reset
+    </RadzenText>
+    <RadzenTemplateForm Data=@("LoginWithRegisterAndReset")>
+        <RadzenLogin Login=@(args => OnLogin(args, "Login with register and password reset"))
+                     ResetPassword=@(args => OnResetPassword(args, "Login with register and password reset"))
+                     Register=@(args => OnRegister("Login with register and password reset")) />
+    </RadzenTemplateForm>
+</RadzenCard>
+
+@code {
+    string userName = "admin";
+    string password = "admin";
+    bool rememberMe = true;
+
+    void OnLogin(LoginArgs args, string name)
+    {
+        Console.WriteLine($"Username: {args.Username} and password: {args.Password}");
+    }
+
+    void OnRegister(string name)
+    {
+        Console.WriteLine($"{name} -> Register");
+    }
+
+    void OnResetPassword(string value, string name)
+    {
+        Console.WriteLine($"{name} -> ResetPassword for user: {value}");
+    }
+}

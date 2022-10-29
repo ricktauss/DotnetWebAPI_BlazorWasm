@@ -54,7 +54,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _persons = await Http.GetFromJsonAsync<List<Person>?>("https://localhost:5001/Persons");
+        _persons = await Http.GetFromJsonAsync<List<Person>?>("https://localhost:7087/Persons");
     }
 
     private void selectPerson(Person person)

@@ -1,9 +1,10 @@
-﻿
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorApiBackend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class PersonsController : ControllerBase
     {
         #region fields
@@ -27,8 +28,11 @@ namespace BlazorApiBackend.Controllers
 
         #region APIs
 
-        // GET: api/<PersonController>
-        [HttpGet]
+        /// <summary>
+        /// Get all persons as Enumbarable
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Authorize]
         public async Task<ActionResult<IEnumerable<PersonDto>>> Get()
         {
                 _logger.LogInformation("GetAll request");
